@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Are you still available Wednesday?</title>
+<style>
+:root{--bg1:#ffd3c4;--bg2:#f4b8d6;--card:rgba(255,255,255,.8);--ink:#5a1740;--yes:#d96b97;--no:#9b6fd0;--chip:#fff;--chipb:#e9b7d1;--on:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#4a2433;--bg2:#3a2050;--card:rgba(40,24,48,.85);--ink:#ffd9ec;--chip:#3a2848;--chipb:#7a4a70}}
+:root[data-theme="dark"]{--bg1:#4a2433;--bg2:#3a2050;--card:rgba(40,24,48,.85);--ink:#ffd9ec;--chip:#3a2848;--chipb:#7a4a70}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:linear-gradient(160deg,var(--bg1),var(--bg2));font-family:Georgia,"Times New Roman",serif;color:var(--ink);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.card{background:var(--card);backdrop-filter:blur(10px);border-radius:28px;padding:28px 24px 30px;width:min(88vw,380px);text-align:center;box-shadow:0 18px 50px rgba(120,40,100,.22)}
+.pic{width:96px;height:96px;border-radius:22px;margin:0 auto 16px;background:#f3d9e8;display:flex;align-items:center;justify-content:center;font-size:54px;overflow:hidden;border:0;padding:0;cursor:pointer}
+.pic img{width:100%;height:100%;object-fit:cover}
+h1{font-size:25px;line-height:1.25;margin:0 0 8px}
+.sub{font-size:15px;opacity:.75;margin:0 0 22px}
+.row{display:flex;gap:16px;justify-content:center;align-items:center;min-height:48px}
+button.b{font:inherit;font-size:15px;color:var(--on);border:0;border-radius:999px;padding:12px 26px;cursor:pointer;box-shadow:0 6px 16px rgba(120,40,100,.25)}
+#yes{background:var(--yes)}
+#ok{background:#fff;color:#e01e37;font-weight:700}
+#no{background:var(--no);transition:opacity .12s}
+#no.gone{opacity:0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chip{font:inherit;font-size:15px;color:var(--ink);background:var(--chip);border:2px solid var(--chipb);border-radius:16px;padding:14px 8px;cursor:pointer;line-height:1.3}
+#vibes .chip:last-child,#acts .chip:last-child{grid-column:1/-1}
+.chip:hover,.chip:focus-visible{border-color:var(--yes)}
+.chip.sel{background:var(--yes);border-color:var(--yes);color:var(--on)}
+.hint{font-size:12px;opacity:.6;margin-top:14px;min-height:16px}
+.step{display:none}.step.on{display:block}
+.sum{background:var(--chip);border-radius:16px;padding:14px;margin:0 0 14px;font-size:16px;line-height:1.6}
+.heart{position:fixed;bottom:-30px;font-size:24px;animation:up 3s ease-in forwards;pointer-events:none}
+@keyframes up{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.heart{animation-duration:.01s}#no{transition:none}}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="step on" id="s5">
+    <div class="pic" style="cursor:default">💌</div>
+    <h1>Hey Maddie 🌸</h1>
+    <p class="sub">Christian has a question</p>
+    <div class="row"><button class="b" id="ok">OK</button></div>
+  </div>
+
+  <div class="step" id="s0">
+    <button class="pic" id="pic" aria-label="Add a photo" title="Tap to add your own photo">🐶</button>
+    <input type="file" id="file" accept="image/*" hidden>
+    <h1>🌸 Are you still available for Wednesday? 🌸</h1>
+    <p class="sub">I've got something planned. You in?</p>
+    <div class="row">
+      <button class="b" id="yes">Yes ♥</button>
+      <button class="b" id="no">No 🥀</button>
+    </div>
+    <div class="hint" id="hint"></div>
+  </div>
+
+  <div class="step" id="s1">
+    <h1>Perfect 😌 What sounds good?</h1>
+    <p class="sub">Pick the vibe and I'll plan around it.</p>
+    <div class="grid" id="vibes">
+      <button class="chip" data-v="Mini golf ⛳">Mini golf ⛳</button>
+      <button class="chip" data-v="Bowling 🎳">Bowling 🎳</button>
+      <button class="chip" data-v="Ice cream 🍦">Ice cream 🍦</button>
+      <button class="chip" data-v="Night walk with sunset 🌅">Night walk with sunset 🌅</button>
+      <button class="chip" data-v="An activity with ice cream 🍦">An activity with ice cream 🍦</button>
+    </div>
+  </div>
+
+  <div class="step" id="s4">
+    <h1>Ooh, ice cream plus what? 🍦</h1>
+    <p class="sub">Pick the activity.</p>
+    <div class="grid" id="acts">
+      <button class="chip" data-v="Walk 🚶">Walk 🚶</button>
+      <button class="chip" data-v="Bowling 🎳">Bowling 🎳</button>
+      <button class="chip" data-v="Mini golf ⛳">Mini golf ⛳</button>
+    </div>
+  </div>
+
+  <div class="step" id="s2">
+    <h1>And what time works?</h1>
+    <p class="sub">Wednesday, any of these.</p>
+    <div class="grid" id="times">
+      <button class="chip" data-v="6:00 PM">6:00 PM</button>
+      <button class="chip" data-v="6:30 PM">6:30 PM</button>
+      <button class="chip" data-v="7:00 PM">7:00 PM</button>
+      <button class="chip" data-v="7:30 PM">7:30 PM</button>
+    </div>
+  </div>
+
+  <div class="step" id="s3">
+    <h1>It's a date 💖</h1>
+    <div class="sum" id="sum"></div>
+    <div class="hint">Screenshot this and send it to me 😌</div>
+  </div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const no=$('no'),hint=$('hint');
+const choice={};
+let timer;
+
+// No button: vanishes on hover, comes back when the cursor leaves
+no.addEventListener('mouseenter',()=>{no.classList.add('gone');hint.textContent="Where'd it go? 👀"});
+no.addEventListener('mouseleave',()=>{no.classList.remove('gone')});
+// Touch screens have no hover: hide briefly instead
+no.addEventListener('touchstart',e=>{
+  e.preventDefault();
+  no.classList.add('gone');hint.textContent="Where'd it go? 👀";
+  clearTimeout(timer);timer=setTimeout(()=>no.classList.remove('gone'),1200);
+},{passive:false});
+no.addEventListener('click',e=>e.preventDefault());
+
+function show(n){document.querySelectorAll('.step').forEach(s=>s.classList.remove('on'));$('s'+n).classList.add('on')}
+$('ok').addEventListener('click',()=>show(0));
+$('yes').addEventListener('click',()=>show(1));
+function pick(gridId,key,next){
+  $(gridId).addEventListener('click',e=>{
+    const c=e.target.closest('.chip');if(!c)return;
+    choice[key]=c.dataset.v;c.classList.add('sel');
+    setTimeout(next,250);
+  });
+}
+pick('vibes','vibe',()=>{
+  if(choice.vibe.startsWith('Night walk')){choice.time='6:30 PM';finish();}
+  else if(choice.vibe.startsWith('An activity'))show(4);
+  else show(2);
+});
+pick('acts','act',()=>{choice.vibe=choice.act+' + ice cream 🍦';show(2);});
+pick('times','time',()=>finish());
+function finish(){
+  $('sum').innerHTML='📅 Wednesday<br>⏰ '+choice.time+'<br>✨ '+choice.vibe+(choice.vibe.startsWith('Night walk')?'<br><br>See you at 6:30 👋':'');
+  show(3);
+  for(let i=0;i<40;i++){
+    const h=document.createElement('div');
+    h.className='heart';
+    h.textContent=['💖','🌸','💗','✨'][i%4];
+    h.style.left=Math.random()*100+'vw';
+    h.style.animationDelay=(Math.random()*1.2)+'s';
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),5000);
+  }
+}
+$('pic').addEventListener('click',()=>$('file').click());
+$('file').addEventListener('change',e=>{
+  const f=e.target.files[0];if(!f)return;
+  const rd=new FileReader();
+  rd.onload=()=>{$('pic').innerHTML='<img alt="" src="'+rd.result+'">'};
+  rd.readAsDataURL(f);
+});
+</script>
+</body>
+</html>
